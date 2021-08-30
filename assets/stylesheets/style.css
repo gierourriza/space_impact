@@ -1,0 +1,37 @@
+#play_area {
+  margin: 30px auto;
+  background-image: url("../images/blackhole.jfif");
+  background-size: cover;
+  background-color: black;
+  width: 800px;
+  height: 400px;
+  border: 5px solid gray;
+}
+#play_area #player_shooter {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  left: 20px;
+  top: 180px;
+}
+#play_area .laser {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+#play_area .enemies {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+#board {
+  width: 800px;
+  margin: 0 auto;
+}
+#board img {
+  width: 80px;
+  height: 80px;
+}
+#board #score {
+  font-family: Verdana;
+}
