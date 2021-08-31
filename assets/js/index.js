@@ -4,7 +4,7 @@ const enemy = ['assets/images/enemy.png','assets/images/boss.png'];
 
 window.addEventListener("keydown", spaceShip);
 //create 3 enemies
-createEnemy();
+// createEnemy();
 createEnemy();
 //space ship movements , fire laser beam
 function spaceShip(event) {
@@ -23,7 +23,8 @@ function spaceShip(event) {
 
 
 function moveUp() {
-    let topPosition = document.getElementById("player_shooter").style.top;
+    // let topPosition = document.getElementById("player_shooter").style.top;
+    let topPosition = window.getComputedStyle(shooter).getPropertyValue('top');
     if (topPosition === "0px") {
         return;
     }
@@ -67,14 +68,23 @@ function createLaser(){
 
 function moveLaser(laser){
     let laserInterval = setInterval(() => {
-        let xPosition = parseInt(laser.style.left);
-        if(xPosition === 340){
-            laser.remove();
+        let xPosition = parseInt(laser.style.left)
+        let monsters = document.querySelectorAll(".enemies")
+        monsters.forEach(monster => {
+          if (checkLaserCollision(laser, monster)) {
+            monster.src = "assets/images/explode2.png";
+            monster.classList.remove("monster")
+            monster.classList.add("dead")
+            // scoreCounter.innerText = parseInt(scoreCounter.innerText) + 100
+          }
+        })
+
+        if (xPosition === 340) {
+          laser.remove()
+        } else {
+          laser.style.left = `${xPosition + 4}px`
         }
-        else{
-            laser.style.left = `${xPosition + 4}px`;
-        }
-    }, 10);
+      }, 10)
 }
 
 function createEnemy(){
@@ -82,8 +92,8 @@ function createEnemy(){
     let enemyImage = enemy[Math.floor(Math.random()*2)]; // Random enemy spawn
     newEnemy.src = enemyImage;
     newEnemy.classList.add("enemies");
-    newEnemy.style.left="500px";
-    newEnemy.style.top = `${Math.floor(Math.random() * 330)}px`;
+    newEnemy.style.left="370";
+    newEnemy.style.top = `${Math.floor(Math.random() * 330) + 30}px`;
     space_area.appendChild(newEnemy);
     moveEnemy(newEnemy);
 }
@@ -92,16 +102,32 @@ function createEnemy(){
 function moveEnemy(enemy){
     let enemyInterval = setInterval(() => {
         let xPosition = parseInt(window.getComputedStyle(enemy).getPropertyValue('left'));
-        if(xPosition <= 20){
+        if(xPosition <= 50){
             enemy.remove();
             createEnemy();
         }
         else{
             enemy.style.left = `${xPosition - 4}px`;
         }
-    }, 30)
+        // console.log("enemy =" + enemy.style.left);
+    }, 50)
 }
 //Check COllision
-function checkLaserCollision() {
+function checkLaserCollision(laser, monster) {
+    let laserLeft = parseInt(laser.style.left)
+    let laserTop = parseInt(laser.style.top)
+    let laserBottom = laserTop - 20
+    let monsterTop = parseInt(monster.style.top)
+    let monsterBottom = monsterTop - 30
+    let monsterLeft = parseInt(monster.style.left)
+    if (laserLeft != 340 && laserLeft + 40 >= monsterLeft) {
+      if ( (laserTop <= monsterTop && laserTop >= monsterBottom) ) {
+        return true
+      } else {
+        return false
+      }
+    } else {
+      return false
    
-  }
+}
+}
