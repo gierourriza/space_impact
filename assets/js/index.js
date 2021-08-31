@@ -1,10 +1,15 @@
-const shooter = document.getElementById("player_shooter");
-const space_area = document.getElementById("play_area");
-const enemy = ['assets/images/enemy.png','assets/images/boss.png'];
+const shooter = document.getElementById("player_shooter"); //main player
+const space_area = document.getElementById("play_area");// play area
+
+const enemy = ['assets/images/alien1.png','assets/images/alien2.png','assets/images/alien3.png','assets/images/alien4.png']; // random enemy that will spawn
+const score = document.getElementById("score");
+const destroyed = false;
 
 window.addEventListener("keydown", spaceShip);
 //create 3 enemies
-// createEnemy();
+createEnemy();
+createEnemy();
+createEnemy();
 createEnemy();
 //space ship movements , fire laser beam
 function spaceShip(event) {
@@ -69,18 +74,20 @@ function createLaser(){
 function moveLaser(laser){
     let laserInterval = setInterval(() => {
         let xPosition = parseInt(laser.style.left)
-        let monsters = document.querySelectorAll(".enemies")
-        monsters.forEach(monster => {
-          if (checkLaserCollision(laser, monster)) {
-            monster.src = "assets/images/explode2.png";
-            monster.classList.remove("monster")
-            monster.classList.add("dead")
-            // scoreCounter.innerText = parseInt(scoreCounter.innerText) + 100
+        let theEnemies = document.querySelectorAll(".enemies")
+        theEnemies.forEach(enemy => {
+          if (checkLaserCollision(laser, enemy)) {
+            enemy.src = "assets/images/explode2.png";
+            enemy.classList.remove("monster")
+            enemy.classList.add("dead")
+            score.innerHTML = parseInt(score.innerHTML) + 100;
+            enemy.remove();
+            createEnemy();
           }
         })
 
         if (xPosition === 340) {
-          laser.remove()
+          laser.remove();
         } else {
           laser.style.left = `${xPosition + 4}px`
         }
@@ -89,7 +96,7 @@ function moveLaser(laser){
 
 function createEnemy(){
     let newEnemy = document.createElement('img');
-    let enemyImage = enemy[Math.floor(Math.random()*2)]; // Random enemy spawn
+    let enemyImage = enemy[Math.floor(Math.random()*4)]; // Random enemy spawn
     newEnemy.src = enemyImage;
     newEnemy.classList.add("enemies");
     newEnemy.style.left="370";
@@ -103,6 +110,7 @@ function moveEnemy(enemy){
     let enemyInterval = setInterval(() => {
         let xPosition = parseInt(window.getComputedStyle(enemy).getPropertyValue('left'));
         if(xPosition <= 50){
+            
             enemy.remove();
             createEnemy();
         }
@@ -110,7 +118,7 @@ function moveEnemy(enemy){
             enemy.style.left = `${xPosition - 4}px`;
         }
         // console.log("enemy =" + enemy.style.left);
-    }, 50)
+    }, 100)
 }
 //Check COllision
 function checkLaserCollision(laser, monster) {
@@ -131,3 +139,6 @@ function checkLaserCollision(laser, monster) {
    
 }
 }
+
+//Spawn Boss
+

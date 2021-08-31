@@ -28,7 +28,7 @@
 
     .enemies-transition{
         opacity: 1;
-        transition: opacity 1.5s ease out;
+        transition: 1.5s ease-out;
     }
 
     .dead{
@@ -40,13 +40,38 @@
 }
 
 #board{
-    width: 800px;
-    margin: 0 auto;
-    img{
-        width: 80px;
-        height: 80px;
+    display: inline-block;
+    margin-top: 10px;
+    width: 590px;
+    background-color: gray;
+    color: white;
+    padding: 10px;
+    
+    #score_board{
+        display: inline-block;
+        img{
+            width: 50px;
+            height: 50px;
+        }
+        #score{
+            font-family: Verdana;
+        }
     }
-    #score{
-        font-family: Verdana;
+    
+    #points{
+        text-align: center;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 100px;
+
+        img{
+            width: 50px;
+            height: 50px;
+        }
+        #monster{
+            vertical-align: top;
+            font-size: 20px;
+            font-family: Verdana;
+        }
     }
 }

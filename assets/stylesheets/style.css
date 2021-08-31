@@ -25,7 +25,7 @@
 }
 #play_area .enemies-transition {
   opacity: 1;
-  transition: opacity 1.5s ease out;
+  transition: 1.5s ease-out;
 }
 #play_area .dead {
   width: 50px;
@@ -33,13 +33,35 @@
   position: absolute;
 }
 #board {
-  width: 800px;
-  margin: 0 auto;
+  display: inline-block;
+  margin-top: 10px;
+  width: 590px;
+  background-color: gray;
+  color: white;
+  padding: 10px;
 }
-#board img {
-  width: 80px;
-  height: 80px;
+#board #score_board {
+  display: inline-block;
 }
-#board #score {
+#board #score_board img {
+  width: 50px;
+  height: 50px;
+}
+#board #score_board #score {
+  font-family: Verdana;
+}
+#board #points {
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 100px;
+}
+#board #points img {
+  width: 50px;
+  height: 50px;
+}
+#board #points #monster {
+  vertical-align: top;
+  font-size: 20px;
   font-family: Verdana;
 }
