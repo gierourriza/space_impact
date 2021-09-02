@@ -6,8 +6,9 @@ const score = document.getElementById("score");
 const destroyed = false;
 let scorePoints = 0;
 let bossMode = false;
-let bossLife = 5000;
+let bossLife = 1000;
 let stop = false;
+let myLife = 3;
 
 window.addEventListener("keydown", spaceShip);
 //create 2 enemies
@@ -81,6 +82,7 @@ function moveLaser(laser){
           if (checkLaserCollision(laser, enemy)) {
             score.innerHTML = parseInt(score.innerHTML) + scorePoints;
             enemy.remove();
+            laser.remove();
             createEnemy();
           }
         })
@@ -96,13 +98,28 @@ function moveLaser(laser){
                 theBoss.src =  "assets/images/explode2.png";
                 score.innerHTML = parseInt(score.innerHTML) + scorePoints;
                 bossMode = false;
-                let msg = document.createElement('h1');
+                let msg = document.createElement('div');
                 msg.classList.add("gameover");
-                msg.innerText = "GAME OVER"
+                let msg_content = document.createElement('h1');
+                let msg_content2 = document.createElement('h2');
+                let img1 = document.createElement('img');
+                let img2 = document.createElement('img');
+                let img3 = document.createElement('img');
+                img1.src = "assets/images/alien1.png";
+                img2.src = "assets/images/player.png";
+                img3.src = "assets/images/alien2.png";
+                msg_content.innerText = "GAME OVER";
+                msg_content2.innerText = "Final Score:" + parseInt(score.innerText);
+                msg.appendChild(msg_content);
+                msg.appendChild(img1);
+                msg.appendChild(img2);
+                msg.appendChild(img3);
+                msg.appendChild(msg_content2);
                 space_area.appendChild(msg);
                 
             }
         }
+
         if (xPosition === 500) {
           laser.remove();
         } else {
@@ -152,7 +169,7 @@ function moveBoss(bossEnemy){
     let direction = true;
     let enemyInterval = setInterval(() => {
     let yPosition = parseInt(window.getComputedStyle(bossEnemy).getPropertyValue('top'));
-    console.log(yPosition);
+    // console.log(yPosition);
     if(yPosition == 0){
         direction = false;
     }
@@ -193,7 +210,7 @@ function moveEnemy(enemy){
         // console.log("enemy =" + enemy.style.left);
     }, 100)
 }
-//Check Collision
+//Check Collision 
 function checkLaserCollision(laser, monster) {
     let laserLeft = parseInt(laser.style.left);
     let laserTop = parseInt(laser.style.top);
@@ -226,22 +243,42 @@ function createEnemyLaser(bossEnemy){
     let xPosition = parseInt(window.getComputedStyle(bossEnemy).getPropertyValue('left'));
     let yPosition = parseInt(window.getComputedStyle(bossEnemy).getPropertyValue('top'));
     let enemyAttack = document.createElement('img');
-    enemyAttack.src = "assets/images/laserEnemy.png";
-    enemyAttack.classList.add('laser');
-    enemyAttack.style.left = `${xPosition}px`;
-    enemyAttack.style.top = `${yPosition - 10}px`;
+    enemyAttack.src = "assets/images/explode.png";
+    enemyAttack.classList.add('laser_enemy');
+    enemyAttack.style.left = `${xPosition - 120}px`;
+    enemyAttack.style.top = `${yPosition + 50}px`;
     return enemyAttack;
 }
 
 function moveEnemyLaser(laser){
     let laserInterval = setInterval(() => {
+        bossLaserCollision(laser);
         let xPosition = parseInt(laser.style.left);
         if (xPosition === 0) {
           laser.remove();
         } else {
           laser.style.left = `${xPosition - 4}px`
         }
-      }, 3)
+      }, 10)
 }
+//This function checks if the laser fired by the boss hit the player
+//
+function bossLaserCollision(bossLaser){
+    // console.log(bossLaser);
+    
+    let laserLeft = parseInt(bossLaser.style.left);
+    let laserTop = parseInt(bossLaser.style.top);
+    let shooterTop = parseInt(window.getComputedStyle(shooter).getPropertyValue('top'))
+    let shooterLeft = parseInt(window.getComputedStyle(shooter).getPropertyValue('left'))
+    
+    // console.log("laser left:" + laserLeft);
+    if(shooterLeft == laserLeft && laserTop == shooterTop){
+        myLife--;
+        console.log("Life =" + myLife);
+    }
+    
+   
+}
+
 
 

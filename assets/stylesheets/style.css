@@ -18,6 +18,11 @@
   height: 30px;
   position: relative;
 }
+#play_area .laser_enemy {
+  width: 40px;
+  height: 40px;
+  position: relative;
+}
 #play_area .enemies {
   width: 50px;
   height: 50px;
@@ -33,38 +38,43 @@
   position: absolute;
 }
 #play_area .gameover {
+  width: 300px;
   margin-left: 150px;
-  margin-top: 80px;
-  font-family: monospace;
-  font-size: 60px;
-  color: white;
-  z-index: -1;
+  background-color: gainsboro;
+  border-radius: 10px;
+  font-family: Verdana;
+  opacity: 75%;
+  text-align: center;
+}
+#play_area .gameover img {
+  width: 60px;
+  height: 60px;
 }
 #board {
-  display: inline-block;
-  margin-top: 10px;
-  width: 590px;
   background-color: gray;
   color: white;
-  padding: 10px;
+  display: inline-block;
   line-height: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  width: 590px;
 }
 #board #score_board {
   display: inline-block;
 }
 #board #score_board img {
-  width: 50px;
   height: 50px;
+  width: 50px;
 }
 #board #score_board #score {
   font-family: Verdana;
 }
 #board #points {
-  text-align: center;
   display: inline-block;
-  vertical-align: top;
-  margin-left: 100px;
   line-height: 10px;
+  margin-left: 100px;
+  text-align: center;
+  vertical-align: top;
 }
 #board #points img {
   width: 35px;
