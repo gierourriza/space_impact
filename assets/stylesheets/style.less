@@ -31,11 +31,19 @@
         transition: 1.5s ease-out;
     }
 
-    .dead{
-        width: 50px;
-        height: 50px;
+    
+    .boss{
+        width: 150px;
+        height: 150px;
         position: absolute;
-       
+    }
+    .gameover{
+        margin-left: 150px;
+        margin-top: 80px;
+        font-family: monospace;
+        font-size: 60px;
+        color: white;
+        z-index: -1;
     }
 }
 
@@ -46,6 +54,7 @@
     background-color: gray;
     color: white;
     padding: 10px;
+    line-height: 10px;
     
     #score_board{
         display: inline-block;
@@ -63,15 +72,20 @@
         display: inline-block;
         vertical-align: top;
         margin-left: 100px;
+        line-height: 10px;
 
         img{
-            width: 50px;
-            height: 50px;
+            width: 35px;
+            height: 35px;
         }
         #monster{
             vertical-align: top;
             font-size: 20px;
             font-family: Verdana;
+        }
+        #the_Boss{
+            width: 80px;
+            height: 80px;
         }
     }
 }

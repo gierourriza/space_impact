@@ -27,10 +27,18 @@
   opacity: 1;
   transition: 1.5s ease-out;
 }
-#play_area .dead {
-  width: 50px;
-  height: 50px;
+#play_area .boss {
+  width: 150px;
+  height: 150px;
   position: absolute;
+}
+#play_area .gameover {
+  margin-left: 150px;
+  margin-top: 80px;
+  font-family: monospace;
+  font-size: 60px;
+  color: white;
+  z-index: -1;
 }
 #board {
   display: inline-block;
@@ -39,6 +47,7 @@
   background-color: gray;
   color: white;
   padding: 10px;
+  line-height: 10px;
 }
 #board #score_board {
   display: inline-block;
@@ -55,13 +64,18 @@
   display: inline-block;
   vertical-align: top;
   margin-left: 100px;
+  line-height: 10px;
 }
 #board #points img {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
 }
 #board #points #monster {
   vertical-align: top;
   font-size: 20px;
   font-family: Verdana;
+}
+#board #points #the_Boss {
+  width: 80px;
+  height: 80px;
 }

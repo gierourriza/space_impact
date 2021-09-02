@@ -4,11 +4,13 @@ const space_area = document.getElementById("play_area");// play area
 const enemy = ['assets/images/alien1.png','assets/images/alien2.png','assets/images/alien3.png','assets/images/alien4.png']; // random enemy that will spawn
 const score = document.getElementById("score");
 const destroyed = false;
+let scorePoints = 0;
+let bossMode = false;
+let bossLife = 5000;
+let stop = false;
 
 window.addEventListener("keydown", spaceShip);
-//create 3 enemies
-createEnemy();
-createEnemy();
+//create 2 enemies
 createEnemy();
 createEnemy();
 //space ship movements , fire laser beam
@@ -73,28 +75,66 @@ function createLaser(){
 
 function moveLaser(laser){
     let laserInterval = setInterval(() => {
-        let xPosition = parseInt(laser.style.left)
-        let theEnemies = document.querySelectorAll(".enemies")
+        let xPosition = parseInt(laser.style.left);
+        let theEnemies = document.querySelectorAll(".enemies");
         theEnemies.forEach(enemy => {
           if (checkLaserCollision(laser, enemy)) {
-            enemy.src = "assets/images/explode2.png";
-            enemy.classList.remove("monster")
-            enemy.classList.add("dead")
-            score.innerHTML = parseInt(score.innerHTML) + 100;
+            score.innerHTML = parseInt(score.innerHTML) + scorePoints;
             enemy.remove();
             createEnemy();
           }
         })
 
-        if (xPosition === 340) {
+        if(bossMode){
+            let theBoss = document.querySelector(".boss");
+            if(checkLaserCollision(laser, theBoss)){
+                // console.log("bosslife =" + bossLife);
+                bossLife--;
+            }
+            if(bossLife <= 0){ //Boss Enemy Defeated - Explode
+                stop = true; //
+                theBoss.src =  "assets/images/explode2.png";
+                score.innerHTML = parseInt(score.innerHTML) + scorePoints;
+                bossMode = false;
+                let msg = document.createElement('h1');
+                msg.classList.add("gameover");
+                msg.innerText = "GAME OVER"
+                space_area.appendChild(msg);
+                
+            }
+        }
+        if (xPosition === 500) {
           laser.remove();
         } else {
           laser.style.left = `${xPosition + 4}px`
         }
       }, 10)
-}
+}  
 
 function createEnemy(){
+  //Spawn BOSS
+//   console.log(parseInt(score.innerHTML));
+  if(parseInt(score.innerHTML) === 1500){
+    stop = false;
+    bossMode= true;
+    scorePoints = 500;
+    let theEnemies = document.querySelectorAll(".enemies");
+    theEnemies.forEach(enemy => {
+        enemy.remove();
+    })
+
+    let bossEnemy = document.createElement('img');
+    let enemyImage = enemy[Math.floor(Math.random()*4)];
+    bossEnemy.src = enemyImage;
+    bossEnemy.classList.add("boss");
+    bossEnemy.style.left ='400';
+    bossEnemy.style.top = `${Math.floor(Math.random() * 200) + 30}px`;
+    space_area.appendChild(bossEnemy);
+    moveBoss(bossEnemy);
+
+  }
+  else{
+    bossLife = 5000;
     let newEnemy = document.createElement('img');
     let enemyImage = enemy[Math.floor(Math.random()*4)]; // Random enemy spawn
     newEnemy.src = enemyImage;
@@ -103,6 +143,40 @@ function createEnemy(){
     newEnemy.style.top = `${Math.floor(Math.random() * 330) + 30}px`;
     space_area.appendChild(newEnemy);
     moveEnemy(newEnemy);
+    scorePoints = 100;
+  }
+    
+}
+//function that lets the boss move up and down
+function moveBoss(bossEnemy){
+    let direction = true;
+    let enemyInterval = setInterval(() => {
+    let yPosition = parseInt(window.getComputedStyle(bossEnemy).getPropertyValue('top'));
+    console.log(yPosition);
+    if(yPosition == 0){
+        direction = false;
+    }
+    else if(yPosition == 225){
+        direction = true;
+    }
+    if(stop){
+        //  bossEnemy.remove();  
+    }
+    else{
+        if(direction){ //Boss Enemy Direction
+            bossEnemy.style.top = `${yPosition - 1}px`;
+        }
+        else{
+            bossEnemy.style.top = `${yPosition + 1}px`;
+        }
+
+        if(yPosition % 10 === 0){
+            enemyLaser(bossEnemy);
+        }
+    }
+    
+ 
+}, 30)
 }
 
 //allow anemies to move from right to left
@@ -110,7 +184,6 @@ function moveEnemy(enemy){
     let enemyInterval = setInterval(() => {
         let xPosition = parseInt(window.getComputedStyle(enemy).getPropertyValue('left'));
         if(xPosition <= 50){
-            
             enemy.remove();
             createEnemy();
         }
@@ -120,12 +193,12 @@ function moveEnemy(enemy){
         // console.log("enemy =" + enemy.style.left);
     }, 100)
 }
-//Check COllision
+//Check Collision
 function checkLaserCollision(laser, monster) {
-    let laserLeft = parseInt(laser.style.left)
-    let laserTop = parseInt(laser.style.top)
-    let laserBottom = laserTop - 20
-    let monsterTop = parseInt(monster.style.top)
+    let laserLeft = parseInt(laser.style.left);
+    let laserTop = parseInt(laser.style.top);
+    let laserBottom = laserTop - 20;
+    let monsterTop = parseInt(monster.style.top);
     let monsterBottom = monsterTop - 30
     let monsterLeft = parseInt(monster.style.left)
     if (laserLeft != 340 && laserLeft + 40 >= monsterLeft) {
@@ -140,5 +213,35 @@ function checkLaserCollision(laser, monster) {
 }
 }
 
-//Spawn Boss
+function enemyLaser(bossEnemy){
+    let laser = createEnemyLaser(bossEnemy);
+    space_area.appendChild(laser);
+    moveEnemyLaser(laser);
+}
+
+function createEnemyLaser(bossEnemy){
+    // const boss_enemy = document.getElementsByClassName("boss");
+    // let xPosition = parseInt(boss_enemy.style.left);
+    // let yPosition = parseInt(boss_enemy.style.top);
+    let xPosition = parseInt(window.getComputedStyle(bossEnemy).getPropertyValue('left'));
+    let yPosition = parseInt(window.getComputedStyle(bossEnemy).getPropertyValue('top'));
+    let enemyAttack = document.createElement('img');
+    enemyAttack.src = "assets/images/laserEnemy.png";
+    enemyAttack.classList.add('laser');
+    enemyAttack.style.left = `${xPosition}px`;
+    enemyAttack.style.top = `${yPosition - 10}px`;
+    return enemyAttack;
+}
+
+function moveEnemyLaser(laser){
+    let laserInterval = setInterval(() => {
+        let xPosition = parseInt(laser.style.left);
+        if (xPosition === 0) {
+          laser.remove();
+        } else {
+          laser.style.left = `${xPosition - 4}px`
+        }
+      }, 3)
+}
+
 
